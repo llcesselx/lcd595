@@ -9,6 +9,7 @@ public:
     void begin();
     void clear();
     void print(const char* str);
+    void setCursor(uint8_t col, uint8_t row);
     void command(uint8_t cmd);
     void write(uint8_t chr);
 

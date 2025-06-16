@@ -49,3 +49,46 @@ This library drives a 1602 (or compatible) character LCD by sending 4-bit data t
 1. Download this repo as `.zip` or clone via Git:
    ```bash
    git clone https://github.com/llcesselx/LCD595.git
+   
+## 😵 How to Use
+
+### 4-Bit Initialization Mode `begin` Command
+
+According to 1602 LCD Module Datasheets, the initialization sequence recommends giving the LCD
+at least 40 ms to start up, when the LCD starts up, it starts in 8-bit mode by default. We
+are only using 4 data pins and want to start the LCD in 4-bit mode. We have to do this
+manually.
+
+Sending the nibble `0x03` sends the bits `0011` to the LCD three times to ensure the LCD is fully
+reset. When we send the fourth nibble `0x02`, we are sending the bits `0010` which sets it to
+4-bit mode. Every program has to start with `(your initialization here).begin();`
+
+```
+void LCD595::begin() {
+    pinMode(_dataPin, OUTPUT);
+    pinMode(_clockPin, OUTPUT);
+    pinMode(_latchPin, OUTPUT);
+
+    delay(50); // Wait for LCD to power up
+
+    // LCD init sequence (4-bit mode)
+    sendNibble(0x03, false);
+    delay(5);
+    sendNibble(0x03, false);
+    delayMicroseconds(150);
+    sendNibble(0x03, false);
+    sendNibble(0x02, false); // Set 4-bit mode
+
+    // Function set: 4-bit, 2 line, 5x8
+    command(0x28);
+    // Display ON, cursor OFF, blink OFF
+    command(0x0C);
+    // Clear display
+    command(0x01);
+    delay(2);
+    // Entry mode set: left to right
+    command(0x06);
+}
+```
+   
+### 

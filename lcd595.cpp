@@ -78,3 +78,9 @@ void LCD595::print(const char* str) {
         write(*str++);
     }
 }
+
+void LCD595::setCursor(uint8_t col, uint8_t row) {
+    static const uint8_t rowOffsets[] = {0x00, 0x40};
+    if (row > 1) row = 1; // clamp to 2-line display since this is a 1602 module
+    command(0x80 | (col + rowOffsets[row]));
+}
