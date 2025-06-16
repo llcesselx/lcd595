@@ -38,9 +38,11 @@ This library drives a 1602 (or compatible) character LCD by sending 4-bit data t
 
 **Arduino → 595 connections:**
 
-- Data → Arduino pin `2`
-- Clock → Arduino pin `4`
-- Latch → Arduino pin `3`
+- Data → Arduino pin `X` (pin 2)
+- Clock → Arduino pin `Y` (pin 4)
+- Latch → Arduino pin `Z` (pin 3)
+
+- Replace `X`, `Y`, `Z` with your actual pin numbers when initializing.
 
 ## 🔧 Installation
 
