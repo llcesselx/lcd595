@@ -47,10 +47,20 @@ void setup() {
 void loop() {
     readTemp();
 
-    char stempF[5];
+    char stempF[7];
+    char stempC[7];
     dtostrf(tempF, 6, 2, stempF);
+    dtostrf(tempC, 6, 2, stempC);
 
     lcd.clear();
+    lcd.setCursor(0, 0);
     lcd.print(stempF);
+    lcd.setCursor(7, 0);
+    lcd.print("F");
+
+    lcd.setCursor(0, 1);
+    lcd.print(stempC);
+    lcd.setCursor(7, 1);
+    lcd.print("C");
 
 }
