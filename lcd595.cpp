@@ -1,16 +1,23 @@
 #include "lcd595.h"
 
+// Constructor for LCD595 class, creates a new LCD595 object and stores the pin numbers that will be used to communicate with the shift register.
 LCD595::LCD595(uint8_t dataPin, uint8_t clockPin, uint8_t latchPin)
+  // member initializer list, sets the initial values of the class's private variables
   : _dataPin(dataPin), _clockPin(clockPin), _latchPin(latchPin) {}
 
+// initializes the LCD object and sets the defined pins as outputs.
 void LCD595::begin() {
     pinMode(_dataPin, OUTPUT);
     pinMode(_clockPin, OUTPUT);
     pinMode(_latchPin, OUTPUT);
 
+    // the following sequence of commands is the get the LCD ready to recieve and display text using 4-bit mode as defined in the datasheet
     delay(50); // Wait for LCD to power up
 
-    // LCD init sequence (4-bit mode)
+    // LCD init sequence (4-bit mode), data will be sent in nibbles instead of a whole byte at once
+    // the sequence involves sending the value 0x03, which is 0 3, or 0000 0011, or 00000011
+    // it sends 0x03 three times, along with the false argument (this indicates this is a command and NOT character data
+    // After sending 0x03 three times, it sends 0x02 once which sets it to 4 bit mode regardless of its previous state
     sendNibble(0x03, false);
     delay(5);
     sendNibble(0x03, false);
@@ -18,7 +25,7 @@ void LCD595::begin() {
     sendNibble(0x03, false);
     sendNibble(0x02, false); // Set 4-bit mode
 
-    // Function set: 4-bit, 2 line, 5x8
+    // Once the LCD is in 4-bit mode, the begin function then sends full byte commands to configure its setting according to the datasheet
     command(0x28);
     // Display ON, cursor OFF, blink OFF
     command(0x0C);
